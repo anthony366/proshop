@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   Row,
@@ -10,15 +10,27 @@ import {
   ListGroupItem,
 } from "react-bootstrap";
 import Rating from "../components/Rating";
-import products from "../products";
+import axios from "axios";
 
 function ProductScreen() {
   const { id } = useParams(); //use this get the user ID in the url
-  const product = products.find((p) => p._id === id); // find the product element by product ID
+  const [product, setProduct] = useState({});
+
+  useEffect(() => {
+    const getSingleProduct = async () => {
+      const response = await axios.get(`/api/products/${id}`);
+
+      setProduct(response.data);
+    };
+
+    getSingleProduct();
+  }, [id]);
+
   return (
     <>
       <Link className="back-btn btn btn-light my-3 px-0" to="/">
-        <i className="fa-solid fa-arrow-left-long"></i> Back To Products
+        <i className="fa-solid fa-arrow-left-long"></i>
+        <span className="back-btn-text">Back To Products</span>
       </Link>
 
       <Row>

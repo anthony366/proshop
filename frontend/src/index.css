@@ -21,12 +21,16 @@ main {
 
 .back-btn {
   color: #777;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
 }
 .back-btn:hover {
   background-color: transparent;
   color: #000;
   text-decoration: underline;
+}
+
+.back-btn-text {
+  margin-left: 10px;
 }
 
 .btn-block {
