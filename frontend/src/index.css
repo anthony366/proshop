@@ -2,8 +2,28 @@ main {
   min-height: 80vh;
 }
 
+h1 {
+  font-size: 1.4rem;
+  padding: 1rem 0;
+}
+h2 {
+  font-size: 1.2rem;
+  padding: 0.5rem 0;
+}
+h2 {
+  font-size: 1.2rem;
+  padding: 0.5rem 0;
+}
+h3 {
+  padding: 1rem 0;
+}
+
 .navLinks {
   justify-content: end;
+}
+
+.card-subtotal {
+  padding: 1rem;
 }
 
 .card-text {
@@ -36,6 +56,45 @@ main {
 .btn-block {
   width: 100%;
 }
+
+.loader {
+  display: block;
+  height: 100px;
+  margin: auto;
+  width: 100px;
+}
+
+.list-group-flush .form-control {
+  appearance: auto;
+  padding: 0.5rem;
+  width: 60px;
+}
+
+.cart-error-message {
+  font-size: 1.2rem;
+}
+
+.back-to-prod {
+  display: block;
+  color: #555;
+  font-size: 0.75rem;
+  margin-top: 12px;
+  text-decoration: none;
+}
+
+.back-to-prod:hover {
+  color: #000;
+  text-decoration: underline;
+}
+
+.back-to-prod .fa-solid {
+  font-size: 0.58rem;
+  margin-right: 4px;
+}
+
+/* .cart-item-card .list-group-item {
+  padding: 25px 18px;
+} */
 
 footer {
   background-color: #f8f9f9;
