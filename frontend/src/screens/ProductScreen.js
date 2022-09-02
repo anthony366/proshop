@@ -12,7 +12,7 @@ import {
   Form,
 } from "react-bootstrap";
 import Rating from "../components/Rating";
-import ErrorMessage from "../components/ErrorMessage";
+import AlertMessage from "../components/AlertMessage";
 import Loader from "../components/Loader";
 import { listProductDetails } from "../redux/productActions";
 
@@ -44,7 +44,7 @@ function ProductScreen() {
       {loading ? (
         <Loader />
       ) : error ? (
-        <ErrorMessage variant="danger">{error}</ErrorMessage>
+        <AlertMessage variant="danger">{error}</AlertMessage>
       ) : (
         <Row>
           <Col md={6}>

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
-import ErrorMessage from "../components/ErrorMessage";
+import AlertMessage from "../components/AlertMessage";
 import Loader from "../components/Loader";
 import { listProducts } from "../redux/productActions";
 
@@ -23,7 +23,7 @@ function HomeScreen() {
       {loading ? (
         <Loader />
       ) : error ? (
-        <ErrorMessage variant="danger">{error}</ErrorMessage>
+        <AlertMessage variant="danger">{error}</AlertMessage>
       ) : (
         <Row>
           {products.map((product) => (

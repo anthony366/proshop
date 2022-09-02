@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ErrorMessage from "../components/ErrorMessage";
+import AlertMessage from "../components/AlertMessage";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { addToCart, removeFromCart } from "../redux/cartActions";
 import {
@@ -23,6 +23,8 @@ function CartScreen() {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
+  const redirect = locate.search ? locate.search.split("=")[1] : "/shipping";
+
   console.log(cartItems);
 
   useEffect(() => {
@@ -35,7 +37,7 @@ function CartScreen() {
     dispatch(removeFromCart(id));
   };
   const checkoutHandler = () => {
-    navigate("/login");
+    navigate(redirect ? `/login?redirect=${redirect}` : "/login");
   };
 
   return (
@@ -43,12 +45,12 @@ function CartScreen() {
       <Col md={8}>
         <h1>Shopping Cart</h1>
         {cartItems.length === 0 ? (
-          <ErrorMessage>
+          <AlertMessage>
             <span className="cart-error-message">Your cart is empty</span>
             <Link to="/" className="back-to-prod">
               <i className="fa-solid fa-arrow-left-long"></i>back to products
             </Link>
-          </ErrorMessage>
+          </AlertMessage>
         ) : (
           <ListGroup className="cart-item-card" variant="flush">
             {cartItems.map((item) => (
