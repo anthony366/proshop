@@ -23,8 +23,6 @@ function CartScreen() {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
-  const redirect = locate.search ? locate.search.split("=")[1] : "/shipping";
-
   console.log(cartItems);
 
   useEffect(() => {
@@ -37,7 +35,7 @@ function CartScreen() {
     dispatch(removeFromCart(id));
   };
   const checkoutHandler = () => {
-    navigate(redirect ? `/login?redirect=${redirect}` : "/login");
+    navigate("/shipping");
   };
 
   return (

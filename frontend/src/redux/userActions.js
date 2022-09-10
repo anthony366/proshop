@@ -1,4 +1,5 @@
 import * as actionTypes from "./userTypes";
+import { MY_ORDERS_RESET } from "./orderTypes";
 import axios from "axios";
 
 // User Log In
@@ -39,6 +40,8 @@ export const login = (email, password) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   localStorage.removeItem("userInfo");
   dispatch({ type: actionTypes.USER_LOGOUT });
+  dispatch({ type: actionTypes.USER_DETAILS_RESET });
+  dispatch({ type: MY_ORDERS_RESET });
 };
 
 // User Register

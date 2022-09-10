@@ -7,7 +7,12 @@ import {
   userDetailsReducer,
   userUpdateProfileReducer,
 } from "./redux/userReducers";
-import { orderCreateReducer } from "./redux/orderReducers";
+import {
+  orderCreateReducer,
+  orderDetailsReducer,
+  orderPayReducer,
+  myOrdersReducer,
+} from "./redux/orderReducers";
 
 const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
@@ -44,6 +49,9 @@ const store = configureStore({
     userDetails: userDetailsReducer,
     userUpdateProfile: userUpdateProfileReducer,
     orderCreate: orderCreateReducer,
+    orderDetails: orderDetailsReducer,
+    orderPay: orderPayReducer,
+    myOrders: myOrdersReducer,
   },
   preloadedState: initialState,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),

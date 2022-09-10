@@ -1,48 +1,48 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Button,
-  Row,
-  Col,
-  ListGroup,
-  Image,
-  Card,
-  ListGroupItem,
-} from "react-bootstrap";
+import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import AlertMessage from "../components/AlertMessage";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { createOrder } from "../redux/orderActions";
+import { ORDER_CREATE_RESET } from "../redux/orderTypes";
+import { USER_DETAILS_RESET } from "../redux/userTypes";
 
 function PlaceOrderScreen() {
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart);
-  const orderCreate = useSelector((state) => state.orderCreate);
-  const { order, success, error } = orderCreate;
   const navigate = useNavigate();
 
-  //Calculate item price
-  cart.itemsPrice = cart.cartItems.reduce(
-    (acc, item) => acc + item.price * item.qty,
-    0
+  const cart = useSelector((state) => state.cart);
+
+  if (!cart.shippingAddress.address) {
+    navigate("/shipping");
+  } else if (!cart.paymentMethod) {
+    navigate("/payment");
+  }
+  //   Calculate prices
+  const addDecimals = (num) => {
+    return (Math.round(num * 100) / 100).toFixed(2);
+  };
+
+  cart.itemsPrice = addDecimals(
+    cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
   );
-  // Calculate shipping price
-  cart.shippingPrice =
-    cart.itemsPrice > 100 ? (0).toFixed(2) : (100).toFixed(2);
-
-  // Calculate tax price
-  cart.taxPrice = Number(cart.itemsPrice * 0.15).toFixed(2);
-
-  // Calculate total price
+  cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100);
+  cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)));
   cart.totalPrice = (
     Number(cart.itemsPrice) +
     Number(cart.shippingPrice) +
     Number(cart.taxPrice)
   ).toFixed(2);
 
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, success, error } = orderCreate;
+
   useEffect(() => {
     if (success) {
       navigate(`/order/${order._id}`);
+      dispatch({ type: USER_DETAILS_RESET });
+      dispatch({ type: ORDER_CREATE_RESET });
     }
     // eslint-disable-next-line
   }, [navigate, success]);
@@ -67,34 +67,30 @@ function PlaceOrderScreen() {
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
-            <ListGroupItem>
+            <ListGroup.Item>
               <h2>Shipping</h2>
               <p>
                 <strong>Address:</strong>
-                <br />
-                {cart.shippingAddress.address}
-                <br />
-                {cart.shippingAddress.city}
-                {cart.shippingAddress.postalCode}
-                <br />
+                {cart.shippingAddress.address}, {cart.shippingAddress.city}{" "}
+                {cart.shippingAddress.postalCode},{" "}
                 {cart.shippingAddress.country}
               </p>
-            </ListGroupItem>
-            <ListGroupItem>
+            </ListGroup.Item>
+
+            <ListGroup.Item>
               <h2>Payment Method</h2>
               <strong>Method: </strong>
               {cart.paymentMethod}
-            </ListGroupItem>
-          </ListGroup>
-          <ListGroup>
-            <ListGroupItem>
+            </ListGroup.Item>
+
+            <ListGroup.Item>
               <h2>Order Items</h2>
-              {cart.cartItems === 0 ? (
+              {cart.cartItems.length === 0 ? (
                 <AlertMessage>Your cart is empty</AlertMessage>
               ) : (
                 <ListGroup variant="flush">
                   {cart.cartItems.map((item, index) => (
-                    <ListGroupItem key={index}>
+                    <ListGroup.Item key={index}>
                       <Row>
                         <Col md={1}>
                           <Image
@@ -110,50 +106,50 @@ function PlaceOrderScreen() {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x {item.price} = ${item.qty * item.price}
+                          {item.qty} x ${item.price} = ${item.qty * item.price}
                         </Col>
                       </Row>
-                    </ListGroupItem>
+                    </ListGroup.Item>
                   ))}
                 </ListGroup>
               )}
-            </ListGroupItem>
+            </ListGroup.Item>
           </ListGroup>
         </Col>
         <Col md={4}>
           <Card>
-            <ListGroup>
-              <ListGroupItem>
+            <ListGroup variant="flush">
+              <ListGroup.Item>
                 <h2>Order Summary</h2>
-              </ListGroupItem>
-              <ListGroupItem>
+              </ListGroup.Item>
+              <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
                   <Col>${cart.itemsPrice}</Col>
                 </Row>
-              </ListGroupItem>
-              <ListGroupItem>
+              </ListGroup.Item>
+              <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
                   <Col>${cart.shippingPrice}</Col>
                 </Row>
-              </ListGroupItem>
-              <ListGroupItem>
+              </ListGroup.Item>
+              <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
                   <Col>${cart.taxPrice}</Col>
                 </Row>
-              </ListGroupItem>
-              <ListGroupItem>
+              </ListGroup.Item>
+              <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
                   <Col>${cart.totalPrice}</Col>
                 </Row>
-              </ListGroupItem>
-              <ListGroupItem>
+              </ListGroup.Item>
+              <ListGroup.Item>
                 {error && <AlertMessage variant="danger">{error}</AlertMessage>}
-              </ListGroupItem>
-              <ListGroupItem>
+              </ListGroup.Item>
+              <ListGroup.Item>
                 <Button
                   type="button"
                   className="btn-block"
@@ -162,7 +158,7 @@ function PlaceOrderScreen() {
                 >
                   Place Order
                 </Button>
-              </ListGroupItem>
+              </ListGroup.Item>
             </ListGroup>
           </Card>
         </Col>
