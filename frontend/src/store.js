@@ -1,17 +1,27 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { productReducer, productDetailsReducer } from "./redux/productReducers";
+import {
+  productListReducer,
+  productDetailsReducer,
+  productDeleteReducer,
+  productCreateReducer,
+  productUpdateReducer,
+} from "./redux/productReducers";
 import { cartReducer } from "./redux/cartReducers";
 import {
   userLoginReducer,
   userRegisterReducer,
   userDetailsReducer,
   userUpdateProfileReducer,
+  userListReducer,
+  userDeleteReducer,
+  userUpdateReducer,
 } from "./redux/userReducers";
 import {
   orderCreateReducer,
   orderDetailsReducer,
   orderPayReducer,
   myOrdersReducer,
+  ordersListReducer,
 } from "./redux/orderReducers";
 
 const cartItemsFromStorage = localStorage.getItem("cartItems")
@@ -41,17 +51,24 @@ const initialState = {
 
 const store = configureStore({
   reducer: {
-    productList: productReducer,
+    productList: productListReducer,
     productDetails: productDetailsReducer,
+    productDelete: productDeleteReducer,
+    productCreate: productCreateReducer,
+    productUpdate: productUpdateReducer,
     cart: cartReducer,
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
     userDetails: userDetailsReducer,
     userUpdateProfile: userUpdateProfileReducer,
+    userList: userListReducer,
+    userDelete: userDeleteReducer,
+    userUpdate: userUpdateReducer,
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,
     myOrders: myOrdersReducer,
+    orderList: ordersListReducer,
   },
   preloadedState: initialState,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
